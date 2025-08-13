@@ -1,0 +1,78 @@
+-- Create default site settings if none exist
+INSERT INTO site_settings (
+  id,
+  site_name,
+  primary_color,
+  secondary_color,
+  background_color,
+  text_color,
+  accent_color,
+  logo_url,
+  favicon_url,
+  welcome_message,
+  footer_text,
+  font_family,
+  enable_dark_mode,
+  max_message_length,
+  enable_guest_access,
+  openrouter_api_key,
+  created_at,
+  updated_at
+) VALUES (
+  gen_random_uuid(),
+  'AI Assistant',
+  '#7c3aed',
+  '#2563eb',
+  '#ffffff',
+  '#000000',
+  '#10b981',
+  null,
+  null,
+  'Welcome to our AI Assistant - Your intelligent companion for conversations and assistance.',
+  'Powered by Advanced AI Technology',
+  'Inter',
+  true,
+  4000,
+  true,
+  '',
+  now(),
+  now()
+) ON CONFLICT (id) DO NOTHING;
+
+-- If no settings exist at all, create one with a specific ID
+INSERT INTO site_settings (
+  id,
+  site_name,
+  primary_color,
+  secondary_color,
+  background_color,
+  text_color,
+  accent_color,
+  welcome_message,
+  footer_text,
+  font_family,
+  enable_dark_mode,
+  max_message_length,
+  enable_guest_access,
+  openrouter_api_key,
+  created_at,
+  updated_at
+)
+SELECT 
+  '00000000-0000-0000-0000-000000000001'::uuid,
+  'AI Assistant',
+  '#7c3aed',
+  '#2563eb',
+  '#ffffff',
+  '#000000',
+  '#10b981',
+  'Welcome to our AI Assistant - Your intelligent companion for conversations and assistance.',
+  'Powered by Advanced AI Technology',
+  'Inter',
+  true,
+  4000,
+  true,
+  '',
+  now(),
+  now()
+WHERE NOT EXISTS (SELECT 1 FROM site_settings);
